@@ -26,6 +26,9 @@ function parseCommandLineArguments() {
 
 parseCommandLineArguments()
 	.then((argv) => {
+		console.log(
+			`Hello from @guardian/scripts. It is ${new Date().toLocaleTimeString()}.`,
+		);
 		const command = argv._[0];
 
 		switch (command) {
