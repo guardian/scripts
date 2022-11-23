@@ -17,7 +17,19 @@ function parseCommandLineArguments() {
 					demandOption: true,
 				}),
 			)
-			.command(Commands.Lint, 'run eslint with guardian rules')
+			.command(Commands.Lint, 'run eslint with guardian rules', (yargs) =>
+				yargs.option('files', {
+					type: 'array',
+					description: 'the files to lint',
+					default: [
+						'src/**',
+
+						// typical directories for a @guardian/cdk project
+						'lib/**',
+						'bin/**',
+					],
+				}),
+			)
 			.demandCommand(1, '')
 			.help()
 			.alias('h', 'help').argv,
@@ -37,7 +49,8 @@ parseCommandLineArguments()
 				return Promise.resolve(`👋 Hello ${name}!`);
 			}
 			case Commands.Lint: {
-				return lintCommand();
+				const { files } = argv;
+				return lintCommand({ files });
 			}
 			default:
 				throw new Error(`Unknown command: ${command ?? ''}`);
