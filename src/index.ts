@@ -1,9 +1,11 @@
 import yargs from 'yargs';
 import { eslintCommand } from './eslint';
+import { jestCommand } from './jest';
 
 const Commands = {
 	Hello: 'hello',
 	Lint: 'lint',
+	Test: 'test',
 };
 
 function parseCommandLineArguments() {
@@ -30,6 +32,21 @@ function parseCommandLineArguments() {
 					],
 				}),
 			)
+			.command(Commands.Test, 'run jest', (yargs) =>
+				yargs
+					.option('legacySnapshotFormat', {
+						type: 'boolean',
+						description:
+							'Use snapshot formats for Jest <=28. See https://jestjs.io/docs/upgrading-to-jest29#snapshot-format',
+						default: false,
+					})
+					.option('cdk', {
+						type: 'boolean',
+						description:
+							'Run tests for a CDK project. A mock of the version number will be added.',
+						default: false,
+					}),
+			)
 			.demandCommand(1, '')
 			.help()
 			.alias('h', 'help').argv,
@@ -37,7 +54,7 @@ function parseCommandLineArguments() {
 }
 
 parseCommandLineArguments()
-	.then((argv) => {
+	.then((argv): Promise<string | void> => {
 		console.log(
 			`Hello from @guardian/scripts. It is ${new Date().toLocaleTimeString()}.`,
 		);
@@ -52,12 +69,21 @@ parseCommandLineArguments()
 				const { files } = argv;
 				return eslintCommand({ files });
 			}
+			case Commands.Test: {
+				const { legacySnapshotFormat, cdk } = argv;
+				return jestCommand({
+					withLegacySnapshotFormat: legacySnapshotFormat,
+					withCdkSetup: cdk,
+				});
+			}
 			default:
 				throw new Error(`Unknown command: ${command ?? ''}`);
 		}
 	})
 	.then((commandResponse) => {
-		console.log(commandResponse);
+		if (typeof commandResponse === 'string') {
+			console.log(commandResponse);
+		}
 	})
 	.catch((err) => {
 		console.error(err);
