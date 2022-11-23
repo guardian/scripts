@@ -2,4 +2,4 @@
 
 // The file `index.js` is created at build time.
 // To use the CLI locally run `npm run cli`.
-require('../lib/bin/index.js');
+require('../lib/index.js');

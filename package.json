@@ -22,7 +22,7 @@
     "lint": "npm run cli -- lint",
     "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest --passWithNoTests",
-    "cli": "ts-node src/bin/index.ts",
+    "cli": "ts-node src/index.ts",
     "prepare": "tsc"
   },
   "devDependencies": {
