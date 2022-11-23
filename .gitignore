@@ -1,0 +1,8 @@
+# IDEs
+.idea
+
+# Generated
+lib
+
+# NPM
+node_modules
