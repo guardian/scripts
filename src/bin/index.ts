@@ -1,9 +1,9 @@
 import yargs from 'yargs';
-
-console.log(`I am the CLI! It is ${new Date().toTimeString()}`);
+import { lintCommand } from './commands/lint';
 
 const Commands = {
 	Hello: 'hello',
+	Lint: 'lint',
 };
 
 function parseCommandLineArguments() {
@@ -17,6 +17,7 @@ function parseCommandLineArguments() {
 					demandOption: true,
 				}),
 			)
+			.command(Commands.Lint, 'run eslint with guardian rules')
 			.demandCommand(1, '')
 			.help()
 			.alias('h', 'help').argv,
@@ -31,6 +32,9 @@ parseCommandLineArguments()
 			case Commands.Hello: {
 				const { name } = argv;
 				return Promise.resolve(`👋 Hello ${name}!`);
+			}
+			case Commands.Lint: {
+				return lintCommand();
 			}
 			default:
 				throw new Error(`Unknown command: ${command ?? ''}`);
