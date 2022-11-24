@@ -21,7 +21,7 @@
     "build": "tsc",
     "lint": "npm run cli -- lint",
     "format": "prettier --write \"src/**/*.ts\"",
-    "test": "jest --passWithNoTests",
+    "test": "npm run cli -- test",
     "cli": "ts-node src/index.ts",
     "prepare": "tsc"
   },

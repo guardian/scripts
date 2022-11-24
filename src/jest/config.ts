@@ -35,6 +35,7 @@ export function jestConfig(props: JestConfigProps): Config {
 			'^.+\\.tsx?$': 'ts-jest',
 		},
 		moduleDirectories: ['node_modules', theirNodeModules],
+		passWithNoTests: true,
 	};
 
 	let config: Config = baseConfig;

@@ -61,4 +61,6 @@ Then update your scripts in `package.json`:
 ## Show me an example
 See https://github.com/guardian/cdk-playground/pull/314 for an example usage.
 
+`@guardian/scripts` is used by itself too. Checkout the [`package.json`](package.json).
+
 [^1]: GitHub installation is achieved through the `prepare` lifecycle script. See [this issue](https://github.com/yarnpkg/yarn/issues/5235) for more info about Yarn incompatibility.
