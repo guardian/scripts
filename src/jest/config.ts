@@ -1,7 +1,7 @@
 import type { Config } from 'jest';
 import { SnapshotFormat } from '@jest/schemas';
 import { join } from 'path';
-import { nodeModules } from '../paths';
+import { theirNodeModules } from '../paths';
 
 export interface JestConfigProps {
 	withLegacySnapshotFormat: boolean;
@@ -34,7 +34,7 @@ export function jestConfig(props: JestConfigProps): Config {
 		transform: {
 			'^.+\\.tsx?$': 'ts-jest',
 		},
-		moduleDirectories: ['node_modules', nodeModules],
+		moduleDirectories: ['node_modules', theirNodeModules],
 	};
 
 	let config: Config = baseConfig;

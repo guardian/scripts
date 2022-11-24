@@ -1,9 +1,16 @@
 import yargs from 'yargs';
 import { eslintCommand } from './eslint';
 import { jestCommand } from './jest';
+import {
+	myRoot,
+	theirCwd,
+	theirNodeModules,
+	theirPackageJson,
+	theirRoot,
+} from './paths';
 
 const Commands = {
-	Hello: 'hello',
+	Debug: 'debug',
 	Lint: 'lint',
 	Test: 'test',
 };
@@ -12,13 +19,7 @@ function parseCommandLineArguments() {
 	return Promise.resolve(
 		yargs
 			.usage('$0 <command> <args>')
-			.command(Commands.Hello, 'a simple command', (yargs) =>
-				yargs.option('name', {
-					type: 'string',
-					description: 'your name',
-					demandOption: true,
-				}),
-			)
+			.command(Commands.Debug, 'Print debug information')
 			.command(Commands.Lint, 'run eslint with guardian rules', (yargs) =>
 				yargs.option('files', {
 					type: 'array',
@@ -47,6 +48,7 @@ function parseCommandLineArguments() {
 						default: false,
 					}),
 			)
+			.version()
 			.demandCommand(1, '')
 			.help()
 			.alias('h', 'help').argv,
@@ -55,15 +57,19 @@ function parseCommandLineArguments() {
 
 parseCommandLineArguments()
 	.then((argv): Promise<string | void> => {
-		console.log(
-			`Hello from @guardian/scripts. It is ${new Date().toLocaleTimeString()}.`,
-		);
 		const command = argv._[0];
 
 		switch (command) {
-			case Commands.Hello: {
-				const { name } = argv;
-				return Promise.resolve(`👋 Hello ${name}!`);
+			case Commands.Debug: {
+				const debugInfo = {
+					currentTime: new Date().toLocaleTimeString(),
+					yourCwd: theirCwd,
+					yourRoot: theirRoot,
+					yourPackageJson: theirPackageJson,
+					yourNodeModules: theirNodeModules,
+					myLocation: myRoot,
+				};
+				return Promise.resolve(JSON.stringify(debugInfo));
 			}
 			case Commands.Lint: {
 				const { files } = argv;
